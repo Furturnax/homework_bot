@@ -44,16 +44,23 @@ def check_tokens():
         'TELEGRAM_TOKEN': TELEGRAM_TOKEN,
         'TELEGRAM_CHAT_ID': TELEGRAM_CHAT_ID,
     }
-    for token in tokens.values():
-        if token is not None:
+    all_tokens = True
+    for name, token in tokens.items():
+        if token:
             logger.debug(
-                f'Переменная окружения {token} поступила корректно.'
+                f'Переменная окружения {name} = {token} поступила корректно.'
             )
         else:
             logger.critical(
-                f'Отсутствует обязательная переменная окружения: {token}.'
+                'Отсутствует обязательная переменная окружения '
+                f'{name} = {token}.'
             )
-            raise SystemExit('Программа принудительно остановлена.')
+            all_tokens = False
+    if not all_tokens:
+        raise SystemExit(
+            'Программа принудительно остановлена из-за отсутствия '
+            'обязательных переменных окружения.'
+        )
 
 
 def get_api_answer(timestamp):
@@ -65,7 +72,7 @@ def get_api_answer(timestamp):
     }
     logger.debug(
         'Отправлен запрос API {url}. Параметры: headers = {headers}, '
-        'params = {params}'.format(**requests_parametrs)
+        'params = {params}.'.format(**requests_parametrs)
     )
     try:
         response = requests.get(**requests_parametrs)
@@ -73,12 +80,12 @@ def get_api_answer(timestamp):
         raise ConnectionError(
             'Сбой в работе программы: Во время подключения к эндпоинту {url} '
             'произошла непредвиденная ошибка: headers = {headers}, '
-            'params = {params};'.format(**requests_parametrs)
+            'params = {params}.'.format(**requests_parametrs)
         )
     if response.status_code != HTTPStatus.OK:
         raise requests.HTTPError(
             'Ошибка HTTP: {status_code}. Причина: {reason}. '
-            'Текст ответа: {text}'.format(**response)
+            'Текст ответа: {text}.'.format(**response)
         )
     logger.debug('Запрос к эндпоинту API-сервиса прошёл успешно.')
     return response.json()
@@ -118,10 +125,13 @@ def parse_status(homework):
 def send_message(bot, message):
     """Отправка сообщения в чат Телеграм."""
     try:
+        logger.debug(f'Попытка отправки сообщения: {message}')
         bot.send_message(TELEGRAM_CHAT_ID, message)
-        logger.debug('Сообщение отправлено')
-    except telegram.error.TelegramError:
-        logger.error('Сообщение не доставлено')
+        logger.debug(f'Сообщение отправлено: {message}')
+        return True
+    except telegram.error.TelegramError as tg_e:
+        logger.error(f'Ошибка при отправке сообщения: {tg_e}')
+        return False
 
 
 def main():
