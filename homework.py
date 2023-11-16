@@ -47,11 +47,11 @@ def check_tokens():
     for token in tokens.values():
         if token is not None:
             logger.debug(
-                f'Переменная окружения "{token}" поступила корректно.'
+                f'Переменная окружения {token} поступила корректно.'
             )
         else:
             logger.critical(
-                f'Отсутствует обязательная переменная окружения: "{token}".'
+                f'Отсутствует обязательная переменная окружения: {token}.'
             )
             raise SystemExit('Программа принудительно остановлена.')
 
@@ -102,11 +102,11 @@ def parse_status(homework):
     for key in ('status', 'homework_name'):
         if key not in homework:
             raise KeyError(
-                f'В словаре отсутствует запрошенный ключ: "{key}".'
+                f'В словаре отсутствует запрошенный ключ: {key}.'
             )
     if homework.get('status') not in HOMEWORK_VERDICTS:
-        raise KeyError(
-            f'В словаре отсутствует запрошеный ключ:"{homework.get("status")}"'
+        raise ValueError(
+            f'Неожиданное принятое значение: {homework.get("status")}'
         )
     homework_name = homework.get('homework_name')
     verdict = HOMEWORK_VERDICTS.get(homework.get('status'))
