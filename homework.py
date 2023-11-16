@@ -153,15 +153,32 @@ def main():
     """Основная логика работы бота."""
     check_tokens()
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
-    timestamp = int(time.time())
+    timestamp = 0
+    homeworks_status_dict = {}
     while True:
         try:
             response = get_api_answer(timestamp)
             homeworks = check_response(response)
-            for homework in homeworks:
-                message = parse_status(homework)
-                send_message(bot, message)
+            if homeworks:
+                first_homework = homeworks[0]
+                verdict = parse_status(first_homework)
+            else:
+                verdict = 'Нет новых статусов.'
+            if verdict != homeworks_status_dict.get('verdict'):
+                if send_message(bot, verdict):
+                    homeworks_status_dict['verdict'] = verdict
+                    timestamp = response.get('current_date')
+                else:
+                    logger.error('Не удалось отправить сообщение в бота.')
+            else:
+                logger.info('Нет изменений в статусе.')
+        except EmptyResponseFromApiError as error:
+            logger.error(f'Пришёл пустой ответ от API. {error}')
         except requests.exceptions.RequestException as error:
+            message = f'Ошибка в HTTP-запросе: {error}'
+            logger.error(message)
+            send_message(bot, message)
+        except Exception as error:
             message = f'Сбой в работе программы: {error}'
             logger.error(message)
             send_message(bot, message)
