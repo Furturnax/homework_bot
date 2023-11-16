@@ -1,6 +1,5 @@
 import logging
 import os
-import sys
 import time
 from http import HTTPStatus
 
@@ -27,14 +26,30 @@ HOMEWORK_VERDICTS = {
 }
 
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s [%(levelname)s] %(message)s',
-    handlers=[
-        logging.StreamHandler(stream=sys.stdout),
-    ]
-)
-logger = logging.getLogger(__name__)
+def custom_logger(name):
+    """Создаёт настраиваемый изолированный logger."""
+    formatter = logging.Formatter(fmt=(
+        '[%(asctime)s] '
+        '[%(levelname)s] '
+        '[%(funcName)s:%(lineno)d] '
+        '[%(message)s]'
+    ))
+    # Создание логов в файле.
+    log_file = __file__ + '.log'
+    file_handler = logging.FileHandler(log_file, encoding='utf-8')
+    file_handler.setFormatter(formatter)
+    # Создание логов в консоли.
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(formatter)
+    # Определение логов.
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+    return logger
+
+
+logger = custom_logger(__name__)
 
 
 def check_tokens():
