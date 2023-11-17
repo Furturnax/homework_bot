@@ -16,8 +16,10 @@ TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 
 RETRY_PERIOD = 600
+DEFAULT_TIMESTAMP = 0
 ENDPOINT = 'https://practicum.yandex.ru/api/user_api/homework_statuses/'
 HEADERS = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
+
 
 HOMEWORK_VERDICTS = {
     'approved': 'Работа проверена: ревьюеру всё понравилось. Ура!',
@@ -167,17 +169,11 @@ def main():
             if verdict != homeworks_status_dict.get('verdict'):
                 if send_message(bot, verdict):
                     homeworks_status_dict['verdict'] = verdict
-                    timestamp = response.get('current_date')
-                else:
-                    logger.error('Не удалось отправить сообщение в бота.')
+                    timestamp = response.get('current_date', DEFAULT_TIMESTAMP)
             else:
-                logger.info('Нет изменений в статусе.')
+                logger.info(f'Нет изменений в статусе: {verdict}')
         except EmptyResponseFromApiError as error:
             logger.error(f'Пришёл пустой ответ от API. {error}')
-        except requests.exceptions.RequestException as error:
-            message = f'Ошибка в HTTP-запросе: {error}'
-            logger.error(message)
-            send_message(bot, message)
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
             logger.error(message)
