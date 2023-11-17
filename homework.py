@@ -16,7 +16,6 @@ TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 
 RETRY_PERIOD = 600
-DEFAULT_TIMESTAMP = 0
 ENDPOINT = 'https://practicum.yandex.ru/api/user_api/homework_statuses/'
 HEADERS = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
 
@@ -169,7 +168,7 @@ def main():
             if verdict != homeworks_status_dict.get('verdict'):
                 if send_message(bot, verdict):
                     homeworks_status_dict['verdict'] = verdict
-                    timestamp = response.get('current_date', DEFAULT_TIMESTAMP)
+                    timestamp = response.get('current_date', timestamp)
             else:
                 logger.info(f'Нет изменений в статусе: {verdict}')
         except EmptyResponseFromApiError as error:
@@ -177,7 +176,9 @@ def main():
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
             logger.error(message)
-            send_message(bot, message)
+            if verdict != homeworks_status_dict.get('verdict'):
+                send_message(bot, message)
+                homeworks_status_dict['verdict'] = verdict
         finally:
             time.sleep(RETRY_PERIOD)
 
