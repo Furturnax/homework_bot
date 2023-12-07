@@ -1,4 +1,4 @@
-## Запуск проекта:
+## Развёртывание проекта:
 + Клонировать репозиторий и перейти в него в командной строке:
 ```shell script
 git clone git@github.com:Furturnax/homework_bot.git
@@ -25,9 +25,9 @@ python -m pip install --upgrade pip
 ```shell script
 pip install -r requirements.txt
 ```
-+ Создать файл `.env` с переменными окружениями.
++ Создать файл `.env` с переменными окружениями:
 
-[EnvExample.md](./EnvExample.md)
+[Руководство по созданию переменных окружения](./EnvExample.md)
 
 + Запустить бота:
 ```shell script
