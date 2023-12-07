@@ -10,7 +10,9 @@ TELEGRAM_CHAT_ID = личный id в телеграм, узнать можно 
 
 <br>
 
-### Обязательные переменные окружения:
-- PRACTICUM_TOKEN = {token}
-- TELEGRAM_TOKEN = {token}
-- TELEGRAM_CHAT_ID = {id}
+### Примеры обязательных переменных окружения в `.env`:
+PRACTICUM_TOKEN = y0_AgABAAAmNpC1AAYckQAAAFDx48EIh0UH2AKFRBew0l30xUzIPm9exTg
+
+TELEGRAM_TOKEN = 7845081381:AAEhLlUVKQhh-hKmXbJgzhlcjPSfYY5kyAp
+
+TELEGRAM_CHAT_ID = 713492169
