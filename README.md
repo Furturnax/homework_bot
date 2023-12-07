@@ -6,33 +6,35 @@
 - логирование каждого действия в консоли;
 - сохранение логов в отдельный файл.
 
-Проект является учебным. Основная польза в приобретении понимания реализации бота в телеграм, а именно:
-- написание структуры бота с использованием библиотеки `Python Telegram Bot`;
-- инкапсулирование обязательных переменных окружения через `.env` и парсинг их через `load_dotenv()`;
-- определение кастомного логера;
-- определение кастомных исключений;
-- использование `Unix time`.
-
+Проект является учебным. Основная польза в приобретении понимания реализации бота в телеграм, с использованием:
+- библиотеки `Python Telegram Bot` для написания структуры бота;
+- `.env` для инкапсулирования обязательных переменных окружения и парсинга их через `load_dotenv()`;
+- созданного кастомного логера;
+- созданного кастомного исключения;
+- `Unix Timestamp`.
 
 <br>
 
 ## Технологический стек:
-- Python 3.11.5
-- Python Telegram Bot 13.7
-- Pytest
+- [Python 3.11.5](https://docs.python.org/release/3.11.5/)
+- [Python Telegram Bot 13.7](https://docs.python-telegram-bot.org/en/v13.7/index.html)
+- [Pytest 6.2.5](https://docs.pytest.org/en/6.2.x/)
 
 <br>
 
 ## Запуск проекта :shipit: :
-[EnvExample.md](./EnvExample.md)
+[Руководство по созданию переменных окружения](./EnvExample.md)
 
-[SetUp.md](./SetUp.md)
+[Руководство по развёртыванию проекта](./SetUp.md)
 
 <br>
 
-## Авторство
-Автор проекта - Yandex Practicum | [GitHub](https://github.com/yandex-praktikum)
+## Dreamteam:
 
-Разработчик - Andrew Fedorchenko | [GitHub](https://github.com/Furturnax)
+[GitHub](https://github.com/yandex-praktikum) | Автор проекта - Yandex Practicum  
 
-Ревьюер - Evgeniy Salahutdinov | [GitHub](https://github.com/EugeneSal)
+[GitHub](https://github.com/Furturnax) | Разработчик - Andrew Fedorchenko 
+
+[GitHub](https://github.com/nik-miniakink) | Наставник - Nikolay Minyakin
+
+[GitHub](https://github.com/EugeneSal) | Ревьюер - Evgeniy Salahutdinov
